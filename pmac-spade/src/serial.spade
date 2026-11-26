@@ -1,0 +1,16 @@
+#[no_mangle(all)]
+entity serial(
+    clk: clock,
+    rst_n: bool,
+    en_n: bool,
+    p_in: uint<16>,
+    p_out: inv uint<8>,
+    rdr: inv uint<16>,
+    tdr: uint<8>
+) {
+    reg(clk) p_out_reg reset(rst_n: 0) = if !en_n { tdr } else { p_out_reg };
+    reg(clk) rdr_reg reset(rst_n: 0) = if !en_n { p_in } else { rdr_reg };
+
+    set p_out = p_out_reg;
+    set rdr = rdr_reg;
+}

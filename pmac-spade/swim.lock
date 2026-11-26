@@ -1,4 +1,2 @@
 [spade]
 commit = "99aa7c86a52caf3931cce91aa20a6491cda4f3a7"
-[synthesis]
-top="top"

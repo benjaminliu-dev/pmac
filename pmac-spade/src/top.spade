@@ -1,6 +1,0 @@
-#[no_mangle(all)]
-entity top(
-    
-) {
-    
-}

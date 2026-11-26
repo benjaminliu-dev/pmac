@@ -1,0 +1,24 @@
+mod serial;
+mod mac;
+
+#[no_mangle(all)]
+entity tt_um_pmac(
+    clk: clock,
+    rst_n: bool,
+    ena: bool,
+    ui_in: uint<8>,
+    uo_out: inv uint<8>,
+    uio_in: uint<8>,
+    uio_out: inv uint<8>,
+    uio_oe: inv uint<8>,
+) {
+    // Convert active-low rst_n to active-high reset if needed
+    let rst = !rst_n;
+
+    // Drive dedicated outputs
+    set uo_out = 0;
+
+    // Configure bidirectional pins (0 = input, 1 = output per bit)
+    set uio_out = 0;
+    set uio_oe = 0;
+}

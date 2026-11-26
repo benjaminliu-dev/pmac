@@ -1,14 +1,20 @@
-#[no_mangle(all)]
-pipeline(1) mac(
+
+entity mac(
     clk: clock,
-    rst: bool,
-    en: bool, 
+    rst_n: bool,
+    en_n: bool, 
     bias: int<8>,
-    di_a: qint<8>,
+    di_a: int<8>,
     di_b: int<8>
-) -> uint<24> {
-    reg(clk) acc reset(rst: false): int<24> = if en {
-        trunc(acc + (sext(di_a * di_b) + sext(bias)))
+) -> int<24> {
+
+    let product: int<16> = di_a * di_b;
+    let product_ext: int<24> = sext(product);
+    let bias_ext: int<24> = sext(bias);
+    let term: int<24> = trunc(product_ext + bias_ext);
+
+    reg(clk) acc: int<24> reset(!rst_n: 0) = if en_n {
+        term
     } else {
         acc
     };
