@@ -1,0 +1,16 @@
+#[no_mangle(all)]
+pipeline(1) mac(
+    clk: clock,
+    rst: bool,
+    en: bool, 
+    bias: int<8>,
+    di_a: qint<8>,
+    di_b: int<8>
+) -> uint<24> {
+    reg(clk) acc reset(rst: false): int<24> = if en {
+        trunc(acc + (sext(di_a * di_b) + sext(bias)))
+    } else {
+        acc
+    };
+    acc
+}
