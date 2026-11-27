@@ -13,8 +13,8 @@ entity mac(
     let bias_ext: int<24> = sext(bias);
     let term: int<24> = trunc(product_ext + bias_ext);
 
-    reg(clk) acc: int<24> reset(!rst_n: 0) = if en_n {
-        term
+    reg(clk) acc: int<24> reset(!rst_n: 0) = if !en_n {
+        trunc(acc + term)
     } else {
         acc
     };

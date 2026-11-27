@@ -1,5 +1,6 @@
 mod serial;
 mod mac;
+mod piso;
 
 #[no_mangle(all)]
 entity tt_um_pmac(

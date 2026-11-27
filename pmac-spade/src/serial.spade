@@ -8,9 +8,22 @@ entity serial(
     rdr: inv uint<16>,
     tdr: uint<8>
 ) {
-    reg(clk) p_out_reg reset(rst_n: 0) = if !en_n { tdr } else { p_out_reg };
-    reg(clk) rdr_reg reset(rst_n: 0) = if !en_n { p_in } else { rdr_reg };
+    reg(clk) p_out_reg reset(!rst_n: 0) = if !en_n { tdr } else { p_out_reg };
+    reg(clk) rdr_reg reset(!rst_n: 0) = if !en_n { p_in } else { rdr_reg }; // had to change conditional
 
     set p_out = p_out_reg;
     set rdr = rdr_reg;
+}
+
+
+entity sipo(
+    clk: clock,
+    rst_n: bool,
+    en_n: bool,
+    sdi: uint<4>
+)
+-> uint<24> {
+    reg(clk) rdr: uint<24> reset(!rst_n: 0) = if !en_n { (rdr << 4) | zext(sdi) } else {rdr};
+
+    rdr
 }
